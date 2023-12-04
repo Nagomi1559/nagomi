@@ -1,5 +1,57 @@
 import streamlit as st
 
+st.title('20代の体力測定の点数')
+st.write('どうも。ここでは20代の体力テストの結果を教えてもらえばその判定を出そうというアプリです（年齢の区別をつけるとめちゃくちゃやばいことになるから20歳限定にしました。悪しからず）。\nさて早速ですが自分のデータを打ち込んで見てくださいな。')
+gender = st.radio('まずは性別を選択してね',["男性","女性"])
+
+#ユーザーに体力テストの結果を入力してもらう
+test_a = st.number_input("握力の結果を入力してね")
+test_b = st.number_input("上体起こしの結果を入力してね")
+test_c = st.number_input("シャトルランの結果を入力してね")
+test_d = st.number_input("反復横跳び結果を入力してね")
+test_e = st.number_input("長座体前屈の結果を入力してね")
+test_f = st.number_input("立ち幅跳びの結果を入力してね")
+
+# 各種目の結果をスコアに変換
+score_a = convert_to_score(test_a, gender, "握力")
+score_b = convert_to_score(test_b, gender, "上体起こし")
+score_c = convert_to_score(test_c, gender, "シャトルラン")
+score_d = convert_to_score(test_d, gender, "反復横跳び")
+score_e = convert_to_score(test_e, gender, "長座体前屈")
+score_f = convert_to_score(test_f, gender, "立ち幅跳び")
+
+#各種目ごとの点数を表示
+st.write(f"{gender}の体力テストの結果:")
+st.write(f"握力の点数:{score_a}")
+st.write(f"上体起こしの点数:{score_b}")
+st.write(f"シャトルランの点数:{score_c}")
+st.write(f"反復横跳びの点数:{score_d}")
+st.write(f"長座体前屈の点数:{score_e}")
+st.write(f"立ち幅跳びの点数:{score_f}")
+        
+#総合点数の算出
+total_score = score_a + score_b + score_c + score_d + score_e + score_f 
+st.write(f"総合点数:{total_score}")
+def get_grade(total_score):
+            if total_score >= 50:
+                  return "A"
+            elif 50>total_score >= 44:
+                  return "B"
+            elif 44>total_score >= 37:
+                  return "C"
+            elif 37>total_score >= 30:
+                  return "D"   
+            elif total_score < 30:
+                  return "E"   
+            
+rank_score = get_grade(total_score)
+
+st.write(f"ランク:{rank_score}")
+st.write("Aだったアナタ:（50以上）人やめてない？すげえよホントに")
+st.write("Bだったアナタ:（44～49）良い生活習慣してるじゃないっすか")
+st.write("Cだったアナタ:（37～43）普通。それ以上でもそれ以下でもねえ")
+st.write("Dだったアナタ:（30～36）まずは無理しない程度から動きましょう。")
+st.write("Eだったアナタ:（30未満） 動 け 豚")
 
 #男女別の変換ルール
 def convert_to_score(result, gender, test_type):
@@ -260,55 +312,3 @@ def convert_to_score(result, gender, test_type):
             elif result >=260:
                 return 10
 
-st.title('20代の体力測定の点数')
-st.write('どうも。ここでは20代の体力テストの結果を教えてもらえばその判定を出そうというアプリです（年齢の区別をつけるとめちゃくちゃやばいことになるから20歳限定にしました。悪しからず）。\nさて早速ですが自分のデータを打ち込んで見てくださいな。')
-gender = st.radio('まずは性別を選択してね',["男性","女性"])
-
-#ユーザーに体力テストの結果を入力してもらう
-test_a = st.number_input("握力の結果を入力してね")
-test_b = st.number_input("上体起こしの結果を入力してね")
-test_c = st.number_input("シャトルランの結果を入力してね")
-test_d = st.number_input("反復横跳び結果を入力してね")
-test_e = st.number_input("長座体前屈の結果を入力してね")
-test_f = st.number_input("立ち幅跳びの結果を入力してね")
-
-# 各種目の結果をスコアに変換
-score_a = convert_to_score(test_a, gender, "握力")
-score_b = convert_to_score(test_b, gender, "上体起こし")
-score_c = convert_to_score(test_c, gender, "シャトルラン")
-score_d = convert_to_score(test_d, gender, "反復横跳び")
-score_e = convert_to_score(test_e, gender, "長座体前屈")
-score_f = convert_to_score(test_f, gender, "立ち幅跳び")
-
-#各種目ごとの点数を表示
-st.write(f"{gender}の体力テストの結果:")
-st.write(f"握力の点数:{score_a}")
-st.write(f"上体起こしの点数:{score_b}")
-st.write(f"シャトルランの点数:{score_c}")
-st.write(f"反復横跳びの点数:{score_d}")
-st.write(f"長座体前屈の点数:{score_e}")
-st.write(f"立ち幅跳びの点数:{score_f}")
-        
-#総合点数の算出
-total_score = score_a + score_b + score_c + score_d + score_e + score_f 
-st.write(f"総合点数:{total_score}")
-def get_grade(total_score):
-            if total_score >= 50:
-                  return "A"
-            elif 50>total_score >= 44:
-                  return "B"
-            elif 44>total_score >= 37:
-                  return "C"
-            elif 37>total_score >= 30:
-                  return "D"   
-            elif total_score < 30:
-                  return "E"   
-            
-rank_score = get_grade(total_score)
-
-st.write(f"ランク:{rank_score}")
-st.write("Aだったアナタ:（50以上）人やめてない？すげえよホントに")
-st.write("Bだったアナタ:（44～49）良い生活習慣してるじゃないっすか")
-st.write("Cだったアナタ:（37～43）普通。それ以上でもそれ以下でもねえ")
-st.write("Dだったアナタ:（30～36）まずは無理しない程度から動きましょう。")
-st.write("Eだったアナタ:（30未満） 動 け 豚")
